@@ -1,0 +1,36 @@
+﻿@model IEnumerable<DataAccess.Entities.QuestionLine>
+
+<div id="editQuestions">
+    <table class="table table-bordered table-hover">
+        <tr>
+            <th>ID</th>
+            <th>Публичность</th>
+            <th>Тема</th>
+            <th>Автор</th>
+            <th>Email</th>
+            <th>Дата</th>
+            <th>Вопрос</th>
+            <th>Ответ</th>
+            <th>Редактировать</th>
+        </tr>
+        @foreach (var question in Model)
+        {
+            <tr>
+                <td>@question.Id</td>
+                <td>@(question.IsPublic?"Да":"Нет")</td>
+                <td>@question.Theme.Description</td>
+                <td>@question.Author</td>
+                <td>@question.Email</td>
+                <td>@question.Date</td>
+                <td>@question.Question</td>
+                <td>@question.Answer</td>
+
+                <td>
+                    <button class="btn btn-xs btn-warning" title="Редактировать вопрос" onclick="showQuestionModal(this, @question.Id)">
+                        <i class="glyphicon glyphicon-pencil"></i>
+                    </button>
+                </td>
+            </tr>
+        }
+    </table>
+</div>

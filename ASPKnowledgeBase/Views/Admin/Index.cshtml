@@ -1,0 +1,75 @@
+﻿
+@{
+    Layout = null;
+    ViewBag.Title = "Панель администратора";
+}
+
+<div class="row">
+    <h2>Редактировать темы</h2>
+    @Html.Action("GetThemes", "Admin")
+    <button class="btn btn-default" title="Добавить тему" onclick="showThemeModal(this, 0)">
+        <i class="glyphicon glyphicon-plus"></i>
+    </button>
+</div>
+
+<div class="row">
+    <h2>Дать ответы на вопросы</h2>
+
+    @Html.Action("GetQuestions", "Admin")
+
+</div>
+
+<button class="hidden" id="submitBtn" data-toggle="modal" data-target="#myModal"></button>
+
+<div id="modal-content">
+</div>
+
+
+
+<script type="text/javascript">
+    function showThemeModal(btn, themeId) {
+            $.ajax({
+                method: 'GET',
+                data: null,
+                url: '@Url.Action("EditTheme", "Admin")' + '?themeId=' + themeId,
+                success: function (partialView) {
+                    $('#modal-content').empty().html(partialView);
+                    $('#submitBtn').click();
+            },
+                error: function (err){
+                console.log(err);
+            }
+            });
+        }
+
+    function showQuestionModal(btn, questionId) {
+            $.ajax({
+                method: 'GET',
+                data: null,
+                url: '@Url.Action("EditQuestion", "Admin")' + '?questionId=' + questionId,
+                success: function (partialView) {
+                    $('#modal-content').empty().html(partialView);
+                    $('#submitBtn').click();
+            },
+                error: function (err){
+                console.log(err);
+            }
+            });
+        }
+
+    function removeTheme(themeId) {
+            $.ajax({
+                method: 'POST',
+                data: null,
+                url: '@Url.Action("RemoveTheme", "Admin")' + '?themeId=' + themeId,
+                success: function (partialView) {
+                    $('#editThemes').empty().html(partialView);
+                },
+                error: function (err) {
+                    console.log('REMOVE ERROR');
+                    console.log(err);
+                },
+            });
+        }
+
+</script>

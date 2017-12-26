@@ -1,0 +1,13 @@
+﻿@model DataAccess.Entities.Theme
+
+@if (ViewBag.Message != null)
+{
+    <div class="alert alert-success">@ViewBag.Message</div>
+}
+
+<div class="form-group">
+    @Html.HiddenFor(x => x.Id)
+    @Html.LabelFor(x => x.Description, "Тема", null)
+    @Html.TextAreaFor(x=>x.Description, new { @class = "form-control", rows = 5 })
+    @Html.ValidationMessageFor(x => x.Description, null, new { @class = "text-danger" })
+</div>

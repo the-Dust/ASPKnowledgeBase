@@ -1,0 +1,6 @@
+﻿@model ASPKnowledgeBase.Models.Login.LoginLinkUser
+
+@if (Model.IsLoggedIn && Model.Login == "admin")
+{
+    <a href="#" onclick="showAdminPanel()">Панель администратора</a>
+}

@@ -1,0 +1,69 @@
+﻿<div class="row">
+    <h2>Задать вопрос</h2>
+    @using (Ajax.BeginForm("AddQuestion", "Home", new AjaxOptions() { HttpMethod = "POST", UpdateTargetId = "userquestion" }))
+    {
+        @Html.Action("AddQuestion", "Home")
+    }
+</div>
+
+<div class="row">
+    <h2>Посмотреть ответы</h2>
+
+    <div class="form-group">
+        <label>Выберите тему</label>
+        @{
+            IEnumerable<string> themesArray = new string[] { "Все темы" }.Concat(ViewBag.Themes as IEnumerable<string>);
+            @Html.DropDownList("Themes",
+                               themesArray
+                               .Select((e, i) => new SelectListItem
+                               {
+                                   Value = i.ToString(),
+                                   Text = e
+                               }),
+                               new { @class = "form-control", @onchange = "showUserAnswers(this.value)", id = "themes" });
+        }
+    </div>
+
+    <div class="form-group">
+        <label>Введите слово для поиска</label>
+        <input autocomplete="off" class="form-control" data-val="true" data-val-required="Поле обязательно для заполнения" id="keyword" type="text" value="" />
+    </div>
+
+    <div class="form-group">
+        <input class="btn btn-primary" type="button" value="Искать" onclick="searchUserAnswers()" />
+    </div>
+
+    <h4>Ответы</h4>
+    <div id="answers">
+        @Html.Action("ShowAnswers", "Home")
+    </div>
+</div>
+
+<script type="text/javascript">
+    function showUserAnswers(themeId) {
+            $.ajax({
+                method: 'GET',
+                data: null,
+                url: '@Url.Action("ShowAnswers", "Home")' + '?themeId=' + themeId,
+                success: function (partialView) {
+                    $('#answers').empty().html(partialView);
+            },
+            error: function (err){
+                console.log(err);
+            }
+            });
+    }
+    function searchUserAnswers() {
+            $.ajax({
+                method: 'GET',
+                data: null,
+                url: '@Url.Action("SearchAnswers", "Home")' + '?themeId=' + $('#themes').val() + '&keyword=' + $('#keyword').val(),
+                success: function (partialView) {
+                    $('#answers').empty().html(partialView);
+            },
+            error: function (err){
+                console.log(err);
+            }
+            });
+        }
+</script>
